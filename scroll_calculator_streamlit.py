@@ -1,7 +1,7 @@
 import streamlit as st
 
 def main():
-    st.title("Adjusted Vanilla Scroll Crafting Calculator")
+    st.title("Scroll Crafting Calculator")
 
     st.write("""
     Enter all your parameters below. Then click **Calculate** to see the results.
