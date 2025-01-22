@@ -27,7 +27,8 @@ def main():
         # === 2. Reproduce the original calculations ===
 
         # Derived inputs
-        days_to_simulate = months_to_simulate * (days_in_year // 12)
+        days_to_simulate = int(months_to_simulate * (days_in_year / 12))
+
         living_cost_per_day = gp_cost_per_day_for_rations * (5 + number_of_hirelings)
         total_scrolls_per_day = scrolls_per_day_wizard + (scrolls_per_day_hireling * number_of_hirelings)
 
