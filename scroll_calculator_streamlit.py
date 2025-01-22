@@ -9,7 +9,7 @@ def main():
     **Note:** For the tax rate, use 0.20 for 20%, 0.30 for 30%, etc.
     """)
 
-    # === 1. Gather user inputs ===
+
     days_in_year = st.number_input("Days in a year", min_value=1, max_value=1000, value=365, step=1)
     months_to_simulate = st.number_input("Months to simulate", min_value=1, max_value=24, value=12, step=1)
     workdays_per_week = st.number_input("Workdays per week", min_value=1, max_value=7, value=5, step=1)
@@ -24,7 +24,7 @@ def main():
     total_shop_rent = st.number_input("Total shop rent (per year, GP)", min_value=0.0, value=1750.0, step=10.0)
 
     if st.button("Calculate"):
-        # === 2. Reproduce the original calculations ===
+
 
         # Derived inputs
         days_to_simulate = int(months_to_simulate * (days_in_year / 12))
@@ -69,8 +69,7 @@ def main():
         # Net profit
         net_profit_with_new_config = total_income - total_cost
 
-        # Prepare final table
-        # The same dictionary you printed in the original code:
+
         adjusted_vanilla_with_new_config_data = {
             "Metric": [
                 "Total Scrolls Crafted",
@@ -101,9 +100,9 @@ def main():
             ],
         }
 
-        # === 3. Print out the final results table ===
+
         st.write("## Final Results")
-        # We'll just replicate your print loop but in Streamlit:
+
         result_lines = []
         for metric, value in zip(adjusted_vanilla_with_new_config_data["Metric"],
                                  adjusted_vanilla_with_new_config_data["Value"]):
@@ -116,11 +115,6 @@ def main():
         
         # Display them as code block or text
         st.code("\n".join(result_lines))
-
-        # Alternatively, you could create a table:
-        # import pandas as pd
-        # df = pd.DataFrame(adjusted_vanilla_with_new_config_data)
-        # st.table(df)
 
 if __name__ == "__main__":
     main()
