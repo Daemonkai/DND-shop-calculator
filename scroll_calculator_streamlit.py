@@ -31,7 +31,7 @@ def main():
         days_to_simulate = int(months_to_simulate * (days_in_year / MONTHS_IN_YEAR))
 
         # Daily living cost for the wizard (assumed 5 persons) plus hirelings
-        living_cost_per_day = gp_cost_per_day_for_rations * (5 + number_of_hirelings)
+        living_cost_per_day = gp_cost_per_day_for_rations * (5)
         total_scrolls_per_day = scrolls_per_day_wizard + (scrolls_per_day_hireling * number_of_hirelings)
 
         # Calculate yearly hireling cost and then the proportional cost for the simulation period.
@@ -55,6 +55,7 @@ def main():
 
                 # Add the crafting cost for today's scrolls.
                 total_cost += vanilla_crafting_cost_per_scroll * daily_scrolls
+                total cost += skilled_hireling_cost_per_day * number_of_hirelings
 
                 # Calculate income and tax for the day.
                 income = daily_scrolls * vanilla_sale_price_per_scroll
