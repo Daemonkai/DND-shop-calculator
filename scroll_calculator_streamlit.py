@@ -20,7 +20,7 @@ def main():
     number_of_hirelings = st.number_input("Number of hirelings", min_value=0, max_value=100, value=2, step=1)
     skilled_hireling_cost_per_day = st.number_input("Skilled hireling cost per day (GP)", min_value=0.0, value=2.0, step=0.5)
     gp_cost_per_day_for_rations = st.number_input("Living cost per person per day (GP)", min_value=0.0, value=1.0, step=0.5)
-    total_shop_rent = st.number_input("Total shop rent (per year, GP)", min_value=0.0, value=1750.0, step=10.0)
+    total_shop_rent = st.number_input("Total shop rent (per year, GP)", min_value=0.0, value=1522.0, step=10.0)
 
     if st.button("Calculate"):
 
