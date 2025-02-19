@@ -55,7 +55,7 @@ def main():
 
                 # Add the crafting cost for today's scrolls.
                 total_cost += vanilla_crafting_cost_per_scroll * daily_scrolls
-                total cost += skilled_hireling_cost_per_day * number_of_hirelings
+                total_cost += skilled_hireling_cost_per_day * number_of_hirelings
 
                 # Calculate income and tax for the day.
                 income = daily_scrolls * vanilla_sale_price_per_scroll
