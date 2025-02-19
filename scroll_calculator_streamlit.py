@@ -9,8 +9,7 @@ def main():
     **Note:** For the tax rate, use 0.20 for 20%, 0.30 for 30%, etc.
     """)
 
-
-    days_in_year = st.number_input("Days in a year", min_value=1, max_value=1000, value=365, step=1)
+    days_in_year = st.number_input("Days in a year", min_value=1, max_value=1000, value=315, step=1)
     months_to_simulate = st.number_input("Months to simulate", min_value=1, max_value=24, value=12, step=1)
     workdays_per_week = st.number_input("Workdays per week", min_value=1, max_value=7, value=5, step=1)
     vanilla_sale_price_per_scroll = st.number_input("Sale price per scroll (GP)", min_value=0.0, value=50.0, step=1.0)
@@ -25,9 +24,8 @@ def main():
 
     if st.button("Calculate"):
 
-
-        # Derived inputs
-        days_to_simulate = int(months_to_simulate * (days_in_year / 12))
+        # Derived inputs using 10.5 months per year
+        days_to_simulate = int(months_to_simulate * (days_in_year / 10.5))
 
         living_cost_per_day = gp_cost_per_day_for_rations * (5 + number_of_hirelings)
         total_scrolls_per_day = scrolls_per_day_wizard + (scrolls_per_day_hireling * number_of_hirelings)
@@ -69,7 +67,6 @@ def main():
         # Net profit
         net_profit_with_new_config = total_income - total_cost
 
-
         adjusted_vanilla_with_new_config_data = {
             "Metric": [
                 "Total Scrolls Crafted",
@@ -87,8 +84,6 @@ def main():
                 total_scrolls_crafted * vanilla_sale_price_per_scroll,
                 total_tax_paid,
                 total_income,
-                # Crafting cost alone = (total crafting cost for scrolls):
-                # But the code uses: total_cost - proportional_shop_rent - living_cost - hireling_cost
                 (total_cost 
                  - proportional_shop_rent 
                  - (living_cost_per_day * days_to_simulate) 
@@ -99,7 +94,6 @@ def main():
                 net_profit_with_new_config,
             ],
         }
-
 
         st.write("## Final Results")
 
