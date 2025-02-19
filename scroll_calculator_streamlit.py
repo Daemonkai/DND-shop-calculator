@@ -24,49 +24,54 @@ def main():
 
     if st.button("Calculate"):
 
-        # Derived inputs using 10.5 months per year
-        days_to_simulate = int(months_to_simulate * (days_in_year / 10.5))
+        # New calendar data: 10.5 months in a year
+        MONTHS_IN_YEAR = 10.5
 
+        # Calculate total days to simulate based on the new calendar
+        days_to_simulate = int(months_to_simulate * (days_in_year / MONTHS_IN_YEAR))
+
+        # Daily living cost for the wizard (assumed 5 persons) plus hirelings
         living_cost_per_day = gp_cost_per_day_for_rations * (5 + number_of_hirelings)
         total_scrolls_per_day = scrolls_per_day_wizard + (scrolls_per_day_hireling * number_of_hirelings)
 
-        # Proportional costs for shop/hirelings
+        # Calculate yearly hireling cost and then the proportional cost for the simulation period.
         total_hireling_cost = skilled_hireling_cost_per_day * number_of_hirelings * days_in_year
-        proportional_shop_rent = total_shop_rent * (months_to_simulate / 12)
-        proportional_hireling_cost = total_hireling_cost * (months_to_simulate / 12)
+        proportional_shop_rent = total_shop_rent * (months_to_simulate / MONTHS_IN_YEAR)
+        # (Note: proportional_hireling_cost is computed for reference; it's not added to total_cost.)
+        proportional_hireling_cost = total_hireling_cost * (months_to_simulate / MONTHS_IN_YEAR)
 
-        # Variables
+        # Initialize simulation totals.
         total_scrolls_crafted = 0
         total_income = 0
         total_cost = 0
         total_tax_paid = 0
 
-        # Simulation loop
+        # Simulation loop: Iterate over each simulated day.
         for day in range(days_to_simulate):
-            # Work only on "workdays_per_week" out of every 7
+            # Work only on the designated workdays each week.
             if day % 7 < workdays_per_week:
                 daily_scrolls = total_scrolls_per_day
                 total_scrolls_crafted += daily_scrolls
 
-                # Crafting cost for today's scrolls
+                # Add the crafting cost for today's scrolls.
                 total_cost += vanilla_crafting_cost_per_scroll * daily_scrolls
 
-                # Income & tax
+                # Calculate income and tax for the day.
                 income = daily_scrolls * vanilla_sale_price_per_scroll
                 tax = income * tax_rate
                 total_tax_paid += tax
                 total_income += income - tax
 
-                # Living cost for wizard + hirelings
+                # Add daily living costs.
                 total_cost += living_cost_per_day
 
-        # Add proportional shop rent (and if you want hireling cost, you can add it here)
+        # Add the proportional shop rent for the simulated period.
         total_cost += proportional_shop_rent
-        # (Optionally, if you want to include proportional_hireling_cost, do: total_cost += proportional_hireling_cost)
 
-        # Net profit
+        # Calculate net profit.
         net_profit_with_new_config = total_income - total_cost
 
+        # Prepare results with a breakdown of metrics.
         adjusted_vanilla_with_new_config_data = {
             "Metric": [
                 "Total Scrolls Crafted",
@@ -100,14 +105,13 @@ def main():
         result_lines = []
         for metric, value in zip(adjusted_vanilla_with_new_config_data["Metric"],
                                  adjusted_vanilla_with_new_config_data["Value"]):
-            # Format floats to 2 decimals
+            # Format floats to 2 decimal places.
             if isinstance(value, float):
                 line = f"{metric:<35} {value:12.2f}"
             else:
                 line = f"{metric:<35} {value:12}"
             result_lines.append(line)
         
-        # Display them as code block or text
         st.code("\n".join(result_lines))
 
 if __name__ == "__main__":
