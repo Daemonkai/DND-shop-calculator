@@ -26,7 +26,12 @@ def main():
         number_of_hirelings = st.number_input("Number of hirelings", min_value=0, max_value=100, value=2, step=1)
         scrolls_per_day_hireling = st.number_input("Scrolls per day per hireling", min_value=0, max_value=100, value=1, step=1)
     skilled_hireling_cost_per_day = st.number_input(f"Skilled hireling wage per day ({currency})", min_value=0.0, value=2.0, step=0.5)
-    living_cost_per_person_per_day = st.number_input(f"Living cost per person per workday ({currency})", min_value=0.0, value=1.0, step=0.5)
+    living_cost_per_person_per_day = st.number_input(
+        f"Living cost per person per day ({currency})",
+        min_value=0.0,
+        value=1.0,
+        step=0.5,
+    )
     living_cost_people_count = st.number_input("People covered by living costs", min_value=0, max_value=100, value=5, step=1)
     total_shop_rent = st.number_input(f"Total shop rent (per year, {currency})", min_value=0.0, value=1522.0, step=10.0)
 
@@ -80,3 +85,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# add customers per week too

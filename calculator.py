@@ -56,7 +56,11 @@ def calculate(cfg: Config) -> Dict[str, float]:
 
     crafting_cost_total = total_scrolls_crafted * cfg.crafting_cost_per_scroll
     hireling_cost_total = cfg.skilled_hireling_cost_per_day * cfg.number_of_hirelings * workdays
-    living_cost_total = cfg.living_cost_per_person_per_day * cfg.living_cost_people_count * workdays
+    living_cost_total = (
+        cfg.living_cost_per_person_per_day
+        * cfg.living_cost_people_count
+        * days_to_simulate
+    )
 
     # Overhead proportional to simulated months
     proportional_shop_rent = cfg.total_shop_rent_per_year * (cfg.months_to_simulate / cfg.months_in_year)
@@ -78,4 +82,3 @@ def calculate(cfg: Config) -> Dict[str, float]:
         "Proportional Shop Rent (GP)": proportional_shop_rent,
         "Net Profit (GP)": net_profit,
     }
-
