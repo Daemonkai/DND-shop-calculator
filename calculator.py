@@ -23,7 +23,7 @@ class Config:
     living_cost_per_person_per_day: float = 1.0
     living_cost_people_count: int = 5  # total people covered by living costs
 
-    total_shop_rent_per_year: float = 1522.0
+    total_shop_rent_per_year: float = 1575.0
 
 
 def _workdays_in_period(total_days: int, workdays_per_week: int) -> int:
