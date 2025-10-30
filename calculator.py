@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import Dict
+from dataclasses import dataclass, field
+from typing import Dict, Tuple
 
 
 @dataclass
@@ -23,7 +23,23 @@ class Config:
     living_cost_per_person_per_day: float = 1.0
     living_cost_people_count: int = 5  # total people covered by living costs
 
-    total_shop_rent_per_year: float = 1575.0
+    total_shop_rent_per_year: float = 1522.0
+
+    spell_slots_sold_per_day: Tuple[int, ...] = field(default_factory=lambda: (0,) * 10)
+    spell_slot_prices: Tuple[float, ...] = field(
+        default_factory=lambda: (
+            30.0,
+            50.0,
+            200.0,
+            300.0,
+            2000.0,
+            2000.0,
+            20000.0,
+            20000.0,
+            20000.0,
+            100000.0,
+        )
+    )
 
 
 def _workdays_in_period(total_days: int, workdays_per_week: int) -> int:
@@ -50,7 +66,13 @@ def calculate(cfg: Config) -> Dict[str, float]:
     # Totals driven by workdays
     total_scrolls_crafted = total_scrolls_per_day * workdays
 
-    gross_income = total_scrolls_crafted * cfg.sale_price_per_scroll
+    scroll_income = total_scrolls_crafted * cfg.sale_price_per_scroll
+    spell_slot_income_per_day = sum(
+        sold * price for sold, price in zip(cfg.spell_slots_sold_per_day, cfg.spell_slot_prices)
+    )
+    spell_slot_income_total = spell_slot_income_per_day * workdays
+
+    gross_income = scroll_income + spell_slot_income_total
     total_tax_paid = gross_income * cfg.tax_rate
     net_income_after_tax = gross_income - total_tax_paid
 
@@ -73,6 +95,8 @@ def calculate(cfg: Config) -> Dict[str, float]:
         "Days To Simulate": float(days_to_simulate),
         "Workdays": float(workdays),
         "Total Scrolls Crafted": float(total_scrolls_crafted),
+        "Scroll Income (GP)": scroll_income,
+        "Spell Slot Income (GP)": spell_slot_income_total,
         "Total Income Before Tax (GP)": gross_income,
         "Total Tax Paid (GP)": total_tax_paid,
         "Total Income After Tax (GP)": net_income_after_tax,

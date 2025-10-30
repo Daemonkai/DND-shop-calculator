@@ -1,6 +1,19 @@
 import streamlit as st
 from calculator import Config, calculate
 
+SPELL_SERVICE_ROWS = [
+    ("Cantrip", 30.0),
+    ("Level 1", 50.0),
+    ("Level 2", 200.0),
+    ("Level 3", 300.0),
+    ("Level 4", 2000.0),
+    ("Level 5", 2000.0),
+    ("Level 6", 20000.0),
+    ("Level 7", 20000.0),
+    ("Level 8", 20000.0),
+    ("Level 9", 100000.0),
+]
+
 def main():
     st.title("Scroll Crafting Calculator")
 
@@ -35,6 +48,35 @@ def main():
     living_cost_people_count = st.number_input("People covered by living costs", min_value=0, max_value=100, value=5, step=1)
     total_shop_rent = st.number_input(f"Total shop rent (per year, {currency})", min_value=0.0, value=1522.0, step=10.0)
 
+    with st.expander("Spell slot services"):
+        st.caption("Set how many spell slots you sell on a workday and the price per casting.")
+        slot_counts = []
+        slot_prices = []
+        cols = st.columns(3)
+        for idx, (label, default_price) in enumerate(SPELL_SERVICE_ROWS):
+            col = cols[idx % 3]
+            with col:
+                key_suffix = label.lower().replace(" ", "_")
+                slot_counts.append(
+                    st.number_input(
+                        f"{label} slots/day",
+                        min_value=0,
+                        max_value=100,
+                        value=0,
+                        step=1,
+                        key=f"slot_count_{key_suffix}",
+                    )
+                )
+                slot_prices.append(
+                    st.number_input(
+                        f"{label} price ({currency})",
+                        min_value=0.0,
+                        value=default_price,
+                        step=10.0,
+                        key=f"slot_price_{key_suffix}",
+                    )
+                )
+
     if st.button("Calculate"):
         cfg = Config(
             days_in_year=days_in_year,
@@ -52,6 +94,8 @@ def main():
             living_cost_per_person_per_day=living_cost_per_person_per_day,
             living_cost_people_count=living_cost_people_count,
             total_shop_rent_per_year=total_shop_rent,
+            spell_slots_sold_per_day=tuple(slot_counts),
+            spell_slot_prices=tuple(slot_prices),
         )
 
         results = calculate(cfg)
@@ -63,6 +107,8 @@ def main():
             "Days To Simulate",
             "Workdays",
             "Total Scrolls Crafted",
+            "Scroll Income (GP)",
+            "Spell Slot Income (GP)",
             "Total Income Before Tax (GP)",
             "Total Tax Paid (GP)",
             "Total Income After Tax (GP)",
